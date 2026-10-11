@@ -36,16 +36,10 @@ body { display: flex; justify-content: center; padding: 5px; }
 }
 .cell.start { background: rgba(135,206,250,.5); border-color: #87cefa; }
 .cell.key { background: rgba(255,215,0,.5); border-color: #ffd700; }
-.number {
-  position: absolute; top: 3px; left: 4px;
-  font-size: clamp(10px, 1.5vw, 15px);
-}
+.number { position: absolute; top: 3px; left: 4px; font-size: clamp(10px, 1.5vw, 15px); }
 .emoji { font-size: clamp(20px, 3.2vw, 30px); }
 .name { max-width: 100%; white-space: pre-line; line-height: 1.25; }
-.cell.active {
-  outline: 3px solid #ffe66d; outline-offset: -3px;
-  box-shadow: 0 0 8px #ffe66d;
-}
+.cell.active { outline: 3px solid #ffe66d; outline-offset: -3px; box-shadow: 0 0 8px #ffe66d; }
 .player-mouse {
   position: absolute; right: 2px; bottom: 2px; width: 36%;
   max-width: 35px; height: auto; z-index: 5; pointer-events: none;
@@ -57,8 +51,7 @@ body { display: flex; justify-content: center; padding: 5px; }
 }
 button {
   border: 0; border-radius: 18px; padding: 13px 22px;
-  font-size: clamp(15px, 2.8vw, 23px); font-weight: 900;
-  cursor: pointer;
+  font-size: clamp(15px, 2.8vw, 23px); font-weight: 900; cursor: pointer;
 }
 #rollButton { background: #19294f; color: white; border: 2px solid #8298df; }
 #resetButton { background: #87ceeb; color: #172b50; }
@@ -104,8 +97,8 @@ button:disabled { opacity: .6; }
     <div class="music-help">
       노래 파일을 한 번에 여러 개 선택하세요.<br>
       파일 이름과 보드 이름이 같으면 자동 연결됩니다.<br>
-      예: 나루토.mp3 → 나루토 / 족고아련.wav → 족고아련<br>
-      확장자를 제외한 파일 이름이 일치해야 하며, 해당 이름 칸에 도착하면 재생됩니다.
+      예: 나루토.mp3 → 나루토<br>
+      확장자를 제외한 파일 이름이 일치해야 하며 해당 이름 칸에 도착하면 재생됩니다.
     </div>
     <input id="musicFiles" type="file" accept="audio/*,.mp3,.wav" multiple>
     <div id="musicStatus">아직 노래 파일을 등록하지 않았어요.</div>
@@ -117,23 +110,42 @@ button:disabled { opacity: .6; }
   </div>
   <audio id="musicPlayer" preload="none"></audio>
 </div>
+
 <script>
 const names = [
-"하뿐슈","하뿐건","하뿐시","하뿐뮴","하뿐지","키세스","톰하디","족고아련","냥","죽순","역도",
-"비유어캣","티모송","러브밤","펑크유","GGEZ","피리춤","호영레이블","복고댄스","포켓몬","나루토","화이팅해야지",
-"피리춤","뿌애뿌애","킥드롭베이스","이머전시","우유","콩나물","오로나민씨","진압해","띵띵땅땅",
-"캐치캐치","나루토2","외모체크","모찌송","여우","야야야","두비두","이쿠욧","토탈얼라이브","파파라치",
-"드라군","달려라하니","뛰어","역도","쉐킷","사마귀","브르르","야옹음메","타모송","꼬마선장","웨이백홈",
-"냥이치니산","허리업","자기소개","바빠","오버드라이브","락댓바디","아원츄","라잌댓","베이프","랩비트",
-"찰칵","우치다","빵치즈빵","날라리","말해","브라질펑크","슈퍼그럼요","고라니","나랑사귈래","러브쉐이크",
-"핑크레이디","망치들라","미니언즈","카와이","우리집","라부부","슈퍼맨","스윔","얼씨구","시바레츠고",
-"스키","2배속스키","슥삭","체온","힙사돈","날라리","몸","방자고","원샷","누나가알려줄게","EDM",
-"오니쨩","LSD","WTF","모또모또","터미널","로드잭","첫만남","버터플라이","헤비머신건","아드레날린",
-"출항","카운팅스타","리빗업","마티니","살아있네","드리밍","배드","리멤버","룰러바이","아웅다웅",
-"캡쳐","바치바치","무브","UP","IAM","하트","페이트","에즈업","더티섹시","결국너야","루니솔라",
-"하뿐강","만개화","초월","큰손왔다","호텔파티","사랑한다고ㅅㅂㄹㅇ","크레이wl러브","로맨스","백갑숙","vip샴페인"
+  "하뿐슈","하뿐건","하뿐시","하뿐뮴","하뿐지",
+  "키세스","톰하디","족고아련","냥","죽순","역도",
+  "비유어캣","티모송","러브밤","펑크유","GGEZ","피리춤",
+  "호영레이블","복고댄스","포켓몬","나루토","화이팅해야지",
+  "피리춤","뿌애뿌애","킥드롭베이스","이머전시","우유",
+  "콩나물","오로나민씨","진압해","띵띵땅땅",
+  "캐치캐치","나루토2","외모체크","모찌송",
+  "여우","야야야","두비두","이쿠욧",
+  "토탈얼라이브","파파라치","드라군","달려라하니","뛰어",
+  "역도","쉐킷","사마귀","브르르","야옹음메","타모송",
+  "꼬마선장","웨이백홈","냥이치니산","허리업","자기소개","바빠",
+  "오버드라이브","락댓바디","아원츄","라잌댓","베이프",
+  "랩비트","찰칵","우치다","빵치즈빵",
+  "날라리","말해","브라질펑크","슈퍼그럼요","고라니",
+  "나랑사귈래","러브쉐이크","핑크레이디","망치들라",
+  "미니언즈","카와이","우리집","라부부","슈퍼맨","스윔",
+  "얼씨구","시바레츠고","스키","2배속스키","슥삭","체온",
+  "힙사돈","날라리","몸","방자고","원샷","누나가알려줄게",
+  "EDM","오니쨩","LSD","WTF","모또모또","터미널",
+  "로드잭","첫만남","버터플라이","헤비머신건","아드레날린",
+  "출항","카운팅스타","리빗업","마티니","살아있네",
+  "드리밍","배드","리멤버","룰러바이","아웅다웅","캡쳐",
+  "바치바치","무브","UP","IAM","하트","페이트","에즈업",
+  "더티섹시","결국너야","루니솔라","하뿐강","만개화","초월",
+  "큰손왔다","호텔파티","사랑한다고ㅅㅂㄹㅇ",
+  "크레이wl러브","로맨스","백갑숙","vip샴페인"
 ];
-const rewards = ["드라슈죽","바비드야광","먹지마1스택","방종5분연장","방종10분연장","커피쿠폰","배민10000원"];
+
+const rewards = [
+  "드라슈죽","바비드야광","먹지마1스택","방종5분연장",
+  "방종10분연장","커피쿠폰","배민10000원"
+];
+
 const order = [1,2,3,4,5,6,7,8,16,15,14,13,12,11,10,9];
 const $ = id => document.getElementById(id);
 const boardElement = $("board");
@@ -149,12 +161,13 @@ let playerPosition = 1;
 let keyPositions = [];
 let boardNamesByPosition = {};
 let rolling = false;
-let currentObjectURL = null;
 const musicByName = new Map();
+let stepAudioContext = null;
 
 function normalizeName(name) {
   return name.normalize("NFC").trim().toLocaleLowerCase("ko-KR");
 }
+
 function shuffle(array) {
   array = [...array];
   for (let i = array.length - 1; i > 0; i--) {
@@ -163,17 +176,21 @@ function shuffle(array) {
   }
   return array;
 }
+
 function formatName(name) {
   const chars = Array.from(name);
   if (chars.length <= 4) return name;
   const middle = Math.ceil(chars.length / 2);
   return chars.slice(0, middle).join("") + "\n" + chars.slice(middle).join("");
 }
+
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, char => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
   }[char]));
 }
+
 function createMouseImage() {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("class", "player-mouse");
@@ -194,83 +211,119 @@ function createMouseImage() {
   `;
   return svg;
 }
+
 function getSongName(filename) {
   return filename.replace(/\.[^.]+$/, "").normalize("NFC").trim();
 }
+
 function stopMusic() {
   musicPlayer.pause();
   musicPlayer.removeAttribute("src");
   musicPlayer.load();
-  currentObjectURL = null;
 }
+
 function registerMusicFiles(fileList) {
-  let added = 0, skipped = 0;
+  let added = 0;
+  let skipped = 0;
+
   for (const file of Array.from(fileList || [])) {
     if (!/\.(mp3|wav|ogg|m4a|aac|flac|webm)$/i.test(file.name)) {
-      skipped++; continue;
+      skipped++;
+      continue;
     }
     const name = getSongName(file.name);
     if (!name) { skipped++; continue; }
+
     const key = normalizeName(name);
     const old = musicByName.get(key);
-    if (old && old.url) {
-      if (currentObjectURL === old.url) stopMusic();
-      URL.revokeObjectURL(old.url);
-    }
+    if (old && old.url) URL.revokeObjectURL(old.url);
+
     musicByName.set(key, { name, file, url: URL.createObjectURL(file) });
     added++;
   }
+
   renderMusicList();
   musicStatus.textContent = `${added}개 파일을 등록했어요.` +
     (skipped ? ` 지원하지 않는 파일 ${skipped}개는 제외했어요.` : "");
 }
+
 function renderMusicList() {
   const entries = [...musicByName.values()];
-  if (!entries.length) { musicList.textContent = "등록된 노래가 없어요."; return; }
+  if (!entries.length) {
+    musicList.textContent = "등록된 노래가 없어요.";
+    return;
+  }
+
   const boardNames = new Set(Object.values(boardNamesByPosition).map(normalizeName));
   musicList.innerHTML = entries.map(entry => {
     const matched = boardNames.has(normalizeName(entry.name));
     return `<div>${matched ? "✅" : "🎵"} ${escapeHTML(entry.name)} — ${matched ? "현재 보드에서 재생 가능" : "현재 보드에 없음"}</div>`;
   }).join("");
 }
+
 async function playMusicForPosition(position) {
   stopMusic();
-  if (position === 1) { musicStatus.textContent = "시작 칸에는 노래를 연결하지 않았어요."; return; }
-  if (keyPositions.includes(position)) { musicStatus.textContent = "황금열쇠 칸에는 노래를 재생하지 않아요."; return; }
+
+  if (position === 1) {
+    musicStatus.textContent = "시작 칸에는 노래를 연결하지 않았어요.";
+    return;
+  }
+  if (keyPositions.includes(position)) {
+    musicStatus.textContent = "황금열쇠 칸에는 노래를 재생하지 않아요.";
+    return;
+  }
+
   const landedName = boardNamesByPosition[position];
-  if (!landedName) { musicStatus.textContent = "이 칸에 연결된 이름이 없어요."; return; }
+  if (!landedName) {
+    musicStatus.textContent = "이 칸에 연결된 이름이 없어요.";
+    return;
+  }
+
   const song = musicByName.get(normalizeName(landedName));
-  if (!song) { musicStatus.textContent = `"${landedName}"에 연결된 노래 파일이 없어요.`; return; }
-  currentObjectURL = song.url;
+  if (!song) {
+    musicStatus.textContent = `"${landedName}"에 연결된 노래 파일이 없어요.`;
+    return;
+  }
+
   musicPlayer.src = song.url;
   musicPlayer.load();
+
   try {
     await musicPlayer.play();
     musicStatus.textContent = `🎵 재생 중: ${song.name}`;
   } catch (error) {
-    musicStatus.textContent = `"${song.name}" 파일은 등록됐지만 재생할 수 없어요. 브라우저 또는 방송 오디오 설정을 확인해 주세요.`;
+    musicStatus.textContent = `"${song.name}" 파일은 등록됐지만 재생할 수 없어요. 브라우저 또는 PRISM 오디오 설정을 확인해 주세요.`;
   }
 }
+
 function createBoard() {
   stopMusic();
   playerPosition = 1;
-  keyPositions = shuffle(Array.from({length: 15}, (_, index) => index + 2)).slice(0, 3);
+
+  keyPositions = shuffle(Array.from({length: 15}, (_, i) => i + 2)).slice(0, 3);
   const selected = shuffle([...new Set(names)]).slice(0, 12);
   boardNamesByPosition = {};
+
   let index = 0;
   for (let number = 2; number <= 16; number++) {
-    if (!keyPositions.includes(number)) boardNamesByPosition[number] = selected[index++] || "";
+    if (!keyPositions.includes(number)) {
+      boardNamesByPosition[number] = selected[index++] || "";
+    }
   }
+
   renderBoard();
   message.textContent = "새로운 판이 준비됐어요!";
   renderMusicList();
 }
+
 function renderBoard() {
   boardElement.innerHTML = "";
+
   order.forEach(number => {
     const cell = document.createElement("div");
     cell.className = "cell";
     cell.dataset.number = number;
+
     if (number === 1) {
       cell.classList.add("start");
       cell.innerHTML = '<span class="number">1</span><span class="emoji">🏁</span>';
@@ -281,67 +334,125 @@ function renderBoard() {
       const name = boardNamesByPosition[number] || "";
       cell.innerHTML = `<span class="number">${number}</span><span class="name">${escapeHTML(formatName(name))}</span>`;
     }
+
     if (number === playerPosition) {
       cell.classList.add("active");
       cell.appendChild(createMouseImage());
     }
+
     boardElement.appendChild(cell);
   });
 }
+
 function handleLanding(position) {
-  if (position === 1) { message.textContent = "🏁 시작 칸에 도착했습니다!"; return; }
+  if (position === 1) {
+    message.textContent = "🏁 시작 칸에 도착했습니다!";
+    return;
+  }
+
   if (keyPositions.includes(position)) {
     const reward = rewards[Math.floor(Math.random() * rewards.length)];
     message.textContent = `🔑 황금열쇠에 도착했습니다!\n🎁 보상: ${reward}`;
     return;
   }
+
   message.textContent = `✨ ${boardNamesByPosition[position]}에 도착했습니다!`;
 }
 
-// 한 칸 이동할 때마다 뿅 소리를 코드로 생성
-let stepAudioContext = null;
+// 한 칸 이동할 때마다 재생하는 "뿅!" 소리
 function playStepSound() {
   try {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextClass) return;
+
     if (!stepAudioContext) stepAudioContext = new AudioContextClass();
     if (stepAudioContext.state === "suspended") stepAudioContext.resume();
-    const now = stepAudioContext.currentTime;
-    const oscillator = stepAudioContext.createOscillator();
-    const gain = stepAudioContext.createGain();
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(720, now);
-    oscillator.frequency.exponentialRampToValueAtTime(360, now + 0.11);
+
+    const ctx = stepAudioContext;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(720, now);
+    osc.frequency.exponentialRampToValueAtTime(360, now + 0.11);
+
     gain.gain.setValueAtTime(0.0001, now);
     gain.gain.exponentialRampToValueAtTime(0.22, now + 0.012);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
-    oscillator.connect(gain);
-    gain.connect(stepAudioContext.destination);
-    oscillator.start(now);
-    oscillator.stop(now + 0.15);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.15);
   } catch (error) {}
 }
+
+// 도착 순간 "빠라밤!" 팡파르
+function playArrivalSound() {
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+
+    if (!stepAudioContext) stepAudioContext = new AudioContextClass();
+    if (stepAudioContext.state === "suspended") stepAudioContext.resume();
+
+    const ctx = stepAudioContext;
+    const start = ctx.currentTime;
+    const notes = [
+      {freq: 523.25, at: 0.00, len: 0.16},
+      {freq: 659.25, at: 0.16, len: 0.16},
+      {freq: 783.99, at: 0.32, len: 0.16},
+      {freq: 1046.50, at: 0.48, len: 0.34}
+    ];
+
+    for (const note of notes) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const t = start + note.at;
+
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(note.freq, t);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.18, t + 0.02);
+      gain.gain.setValueAtTime(0.18, t + Math.max(0.03, note.len - 0.04));
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + note.len);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + note.len + 0.01);
+    }
+  } catch (error) {}
+}
+
 function wait(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 async function rollDice() {
   if (rolling) return;
   rolling = true;
   rollButton.disabled = true;
+
   try {
     const dice = Math.floor(Math.random() * 6) + 1;
     let target = playerPosition;
+
     for (let step = 0; step < dice; step++) {
       if (playerPosition >= 16) {
         createBoard();
       } else {
         playerPosition += 1;
       }
+
       target = playerPosition;
       renderBoard();
       playStepSound();
       await wait(330);
     }
+
+    playArrivalSound();
     handleLanding(target);
     await playMusicForPosition(target);
   } finally {
@@ -349,18 +460,25 @@ async function rollDice() {
     rollButton.disabled = false;
   }
 }
+
 rollButton.addEventListener("click", rollDice);
 $("resetButton").addEventListener("click", createBoard);
 $("musicButton").addEventListener("click", () => musicPanel.classList.toggle("open"));
+
 $("stopMusicButton").addEventListener("click", () => {
   stopMusic();
   musicStatus.textContent = "노래를 정지했어요.";
 });
-$("closeMusicButton").addEventListener("click", () => musicPanel.classList.remove("open"));
+
+$("closeMusicButton").addEventListener("click", () => {
+  musicPanel.classList.remove("open");
+});
+
 musicFilesInput.addEventListener("change", () => {
   registerMusicFiles(musicFilesInput.files);
   musicFilesInput.value = "";
 });
+
 createBoard();
 </script>
 </body>
